@@ -1,0 +1,252 @@
+{
+  "info": {
+    "_postman_id": "3963d818-3787-4fb5-a442-9366582e96ad",
+    "name": "Patitas JWT",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "56637168",
+    "_collection_link": "https://go.postman.co/collection/56637168-3963d818-3787-4fb5-a442-9366582e96ad?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Registrar Adoptante Hito 1",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 201 Created\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\nconst respuesta = pm.response.json();\r\n\r\npm.test(\"Username correcto\", function () {\r\n    pm.expect(respuesta.username).to.eql(\"adoptante_pedro2\");\r\n});\r\n\r\npm.test(\"Rol USER correcto\", function () {\r\n    pm.expect(respuesta.rol).to.eql(\"USER\");\r\n});\r\n\r\npm.test(\"La API no devuelve la contraseña\", function () {\r\n    pm.expect(respuesta).to.not.have.property(\"password\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"adoptante_pedro2\",\r\n    \"password\": \"mi_clave_secreta_123\",\r\n    \"rol\": \"USER\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/auth/registrar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "auth",
+            "registrar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login Hito 1",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"adoptante_pedro\",\r\n    \"password\": \"mi_clave_secreta_123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Registrar Voluntario BCrypt Hito 2",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 201 Created\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\nconst respuesta = pm.response.json();\r\n\r\npm.test(\"Usuario ADMIN creado\", function () {\r\n    pm.expect(respuesta.username).to.eql(\"voluntario_carlos2\");\r\n    pm.expect(respuesta.rol).to.eql(\"ADMIN\");\r\n});\r\n\r\npm.test(\"No se expone password\", function () {\r\n    pm.expect(respuesta).to.not.have.property(\"password\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"voluntario_carlos2\",\r\n    \"password\": \"mi_clave_secreta_123\",\r\n    \"rol\": \"ADMIN\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/auth/registrar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "auth",
+            "registrar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login JWT",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200 OK\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst respuesta = pm.response.json();\r\n\r\npm.test(\"La respuesta contiene un JWT\", function () {\r\n    pm.expect(respuesta).to.have.property(\"token\");\r\n    pm.expect(respuesta.token).to.be.a(\"string\");\r\n    pm.expect(respuesta.token.length).to.be.above(20);\r\n});\r\n\r\npm.collectionVariables.set(\r\n    \"jwt_token\",\r\n    respuesta.token\r\n);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"voluntario_carlos\",\r\n    \"password\": \"mi_clave_secreta_123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Perfil Protegido JWT",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200 OK\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst respuesta = pm.response.json();\r\n\r\npm.test(\"Usuario autenticado correctamente\", function () {\r\n    pm.expect(respuesta.usuario)\r\n        .to.eql(\"voluntario_carlos\");\r\n});\r\n\r\npm.test(\"El usuario tiene rol ADMIN\", function () {\r\n    pm.expect(respuesta.rol)\r\n        .to.eql(\"ADMIN\");\r\n});\r\n\r\npm.test(\"La respuesta contiene mensaje\", function () {\r\n    pm.expect(respuesta)\r\n        .to.have.property(\"mensaje\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{bearer_token_0i1q}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/auth/perfil",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "auth",
+            "perfil"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Perfil Token Invalido JWT",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Token alterado devuelve 401\", function () {\r\n    pm.response.to.have.status(401);\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt_token}}X"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/auth/perfil",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "auth",
+            "perfil"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "jwt_token",
+      "value": ""
+    },
+    {
+      "key": "bearer_token_0sif",
+      "secret": true
+    },
+    {
+      "key": "bearer_token_0i1q",
+      "secret": true
+    }
+  ]
+}
