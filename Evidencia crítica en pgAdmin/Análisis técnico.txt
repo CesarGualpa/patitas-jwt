@@ -1,0 +1,5 @@
+Almacenar contraseñas en texto plano permite que cualquier persona con acceso a la base de datos pueda conocer inmediatamente las credenciales de todos los usuarios.  
+Un atacante interno con permisos sobre PostgreSQL podría consultar la tabla usuarios y obtener las contraseñas sin necesidad de descifrarlas.  
+De igual manera, una vulnerabilidad externa que permita acceder a los registros de la base de datos podría exponer directamente las cuentas del refugio.  
+El problema también aumenta si los usuarios reutilizan esas mismas contraseñas en otros sistemas o servicios.  
+Por esta razón, las contraseñas nunca deben almacenarse en texto plano y deben protegerse mediante algoritmos de hashing especializados como BCrypt.
